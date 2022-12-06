@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <img src="https://easytransfert.ci/images/logo/logo6.png" id="img-logo">
+      </div>
+      <div class="row">
+        <h1>Partagez votre expérience avec EasyTransfert</h1>
+      </div>
+      <div class="row">
+        <h5>*Questionnaire uniquement destiné à <strong>nos utilisateurs</strong></h5>
+      </div>
+      <div class="row">
+        <form class="mt-5" (ngSubmit)="sendDatas()" [formGroup]="saveForm">
+          <div *ngIf="step==0">
+            <div class="row mb-2">
+              <mat-form-field appearance="fill">
+                <mat-label>Nom & Prénom</mat-label>
+                <input matInput formControlName="name">
+                <mat-error *ngIf="saveForm.get('name')?.touched && !saveForm.get('name')?.valid">
+                  Nom et prénom requis
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row mb-2">
+              <mat-form-field appearance="fill" >
+                <mat-label>Téléphone</mat-label>
+                <input matInput type="number" formControlName="phone">
+                <mat-error *ngIf="saveForm.get('phone')?.touched && !saveForm.get('phone')?.valid">
+                  Numéro non valide
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="step==1">
+            <div class="row mb-2">
+              <mat-form-field appearance="legacy">
+                <mat-label>Avez vous déjà eu un à vous plaindre du service ?</mat-label>
+                <mat-select  formControlName="plainte">
+                  <mat-option *ngFor="let p of plaintes" [value]="p">{{p.toUpperCase()}}</mat-option>
+                </mat-select>
+                <!--mat-error *ngIf="priceList.controls[i].get('unite')?.errors">
+                  Unite Requis
+                </mat-error-->
+              </mat-form-field>
+            </div>
+            <div class="row mb-2" *ngIf="saveForm.get('plainte')?.valid && saveForm.get('plainte')?.value=='oui'">
+              <mat-form-field appearance="fill">
+                <mat-label>Détails de votre plainte</mat-label>
+                <textarea matInput formControlName="plainte_text" rows="5"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="step==2">
+            <mat-form-field appearance="fill">
+              <mat-label>Critiques/suggestions pour nous aider à améliorernos services</mat-label>
+              <textarea matInput formControlName="final_text"></textarea>
+            </mat-form-field>
+          </div>
+          <div>
+            <button  mat-flat-button (click)="onResetClick()">{{step==0?'Annuler':'Précédent'}}</button>
+            <button mat-flat-button color="primary" class="mx-2" (click)="onNextClick()">{{step < 2?'Suivant':'Envoyer'}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-5">
+      <img src="https://easytransfert.ci/images/home/shape-8.png" alt="" id="img-phone">
+    </div>
+  </div>
+</div>

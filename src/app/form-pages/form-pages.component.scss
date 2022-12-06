@@ -1,0 +1,42 @@
+.container{
+  margin-top: 80px;
+}
+#img-phone{
+  background-color: transparent;
+  height: 900px;
+}
+#img-logo{
+  height: 80px;
+  width: 260px;
+  text-align: left;
+}
+h1 {
+  margin-top: 50px;
+  font-size: 2.5em; /* 40px/16=2.5em */
+  color: white;
+}
+h5 {
+  font-size: 1.5em; /* 40px/16=2.5em */
+  color: royalblue;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: white !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: royalblue !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: dodgerblue !important;;
+}
+
+.mat-form-field {
+  width: 80%;
+  font-size: 1.5em;
+  color: royalblue;
+}
