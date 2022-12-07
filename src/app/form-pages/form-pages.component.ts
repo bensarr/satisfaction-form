@@ -43,12 +43,16 @@ export class FormPagesComponent implements OnInit {
     if (this.step == 2 && this.saveForm.valid) {
       this.spinner.show();
       setTimeout(() => {
+        this.sendDatas();
         this.step = 0;
         this.saveForm.reset();
-        this.spinner.hide();
+        this.spinner.hide().then(
+          ()=> this.openSnackBar(
+            "Informations Enregistrées.",
+            "Fermer",
+          )
+        );
       }, 2000);
-
-      this.sendDatas();
     }
   }
 
@@ -101,10 +105,6 @@ export class FormPagesComponent implements OnInit {
 
   sendDatas() {
     console.log(this.saveForm.value);
-    this.openSnackBar(
-      "Informations Enregistrées.",
-      "Fermer",
-    );
   }
 
   openSnackBar(message: string, action: string) {
