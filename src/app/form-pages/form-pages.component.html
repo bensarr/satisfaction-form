@@ -11,7 +11,7 @@
         <h5>*Questionnaire uniquement destiné à <strong>nos utilisateurs</strong></h5>
       </div>
       <div class="row">
-        <form class="mt-5" (ngSubmit)="sendDatas()" [formGroup]="saveForm">
+        <form class="mt-5" [formGroup]="saveForm">
           <div *ngIf="step==0">
             <div class="row mb-2">
               <mat-form-field appearance="fill">
@@ -35,26 +35,29 @@
           <div *ngIf="step==1">
             <div class="row mb-2">
               <mat-form-field appearance="legacy">
-                <mat-label>Avez vous déjà eu un à vous plaindre du service ?</mat-label>
+                <mat-label>Avez vous déjà eu à vous plaindre du service ?</mat-label>
                 <mat-select  formControlName="plainte">
                   <mat-option *ngFor="let p of plaintes" [value]="p">{{p.toUpperCase()}}</mat-option>
                 </mat-select>
-                <!--mat-error *ngIf="priceList.controls[i].get('unite')?.errors">
-                  Unite Requis
-                </mat-error-->
+                <mat-error *ngIf="saveForm.get('plainte')?.touched && !saveForm.get('plainte')?.valid">
+                  Champ obligatoire
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="row mb-2" *ngIf="saveForm.get('plainte')?.valid && saveForm.get('plainte')?.value=='oui'">
               <mat-form-field appearance="fill">
                 <mat-label>Détails de votre plainte</mat-label>
-                <textarea matInput formControlName="plainte_text" rows="5"></textarea>
+                <textarea matInput formControlName="plainte_text" rows="10"></textarea>
+                <mat-error *ngIf="saveForm.get('plainte_text')?.touched && !saveForm.get('plainte_text')?.valid">
+                  Détails sur la plainte Requis
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
           <div *ngIf="step==2">
             <mat-form-field appearance="fill">
               <mat-label>Critiques/suggestions pour nous aider à améliorernos services</mat-label>
-              <textarea matInput formControlName="final_text"></textarea>
+              <textarea matInput formControlName="final_text" rows="10"></textarea>
             </mat-form-field>
           </div>
           <div>

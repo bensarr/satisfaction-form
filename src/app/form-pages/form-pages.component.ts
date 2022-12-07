@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgxSpinnerService} from "ngx-spinner";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-form-pages',
   templateUrl: './form-pages.component.html',
   styleUrls: ['./form-pages.component.scss']
 })
-export class FormPagesComponent implements OnInit{
+export class FormPagesComponent implements OnInit {
 
   step = 0;
   public saveForm!: FormGroup;
@@ -18,34 +19,36 @@ export class FormPagesComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private spinner: NgxSpinnerService
-  ) { }
+    private spinner: NgxSpinnerService,
+    private _snackBar: MatSnackBar
+  ) {
+  }
+
   onNextClick() {
     //TODO Need to verify first of all if form is valid
-    if(
+    if (
       (this.step == 0 && this.saveForm.get('name')?.valid && this.saveForm.get('phone')?.valid)
       ||
       (this.step == 1 && this.saveForm.get('plainte')?.valid && this.saveForm.get('plainte_text')?.valid)
       ||
       (this.step == 2 && this.saveForm.get('final-text')?.valid)
-    )
-    {
+    ) {
       this.spinner.show();
       setTimeout(() => {
-        this.step++;
+        if (this.step != 2)
+          this.step++;
         this.spinner.hide();
       }, 1000);
     }
-    else {
-      if(this.step == 2 && this.saveForm.valid){
-        this.spinner.show();
-        setTimeout(() => {
-          this.step = 0;
-          this.saveForm.reset();
-          this.spinner.hide();
-        }, 2000);
-        console.log(this.saveForm.value)
-      }
+    if (this.step == 2 && this.saveForm.valid) {
+      this.spinner.show();
+      setTimeout(() => {
+        this.step = 0;
+        this.saveForm.reset();
+        this.spinner.hide();
+      }, 2000);
+
+      this.sendDatas();
     }
   }
 
@@ -62,30 +65,55 @@ export class FormPagesComponent implements OnInit{
     this.saveForm = this.fb.group({
       name: [
         '',
-        [Validators.required]
+        [Validators.required,]
       ],
-      phone:[
+      phone: [
         '',
         [
           Validators.required,
           Validators.pattern(MOBILE_PATTERN)
         ]
       ],
-      plainte:[
+      plainte: [
+        '',
         [
-          Validators.required
+          Validators.required,
+          Validators.minLength(2)
         ],
       ],
-      plainte_text:[
+      plainte_text: [
         '',
       ],
-      final_text:[
+      final_text: [
         '',
       ]
     });
+    this.saveForm.get('plainte')?.valueChanges
+      .subscribe(value => {
+          if (value == 'oui') {
+            this.saveForm.get('plainte_text')?.setValidators(Validators.required)
+          } else {
+            this.saveForm.get('plainte_text')?.clearValidators();
+          }
+        }
+      );
   }
 
   sendDatas() {
+    console.log(this.saveForm.value);
+    this.openSnackBar(
+      "Informations Enregistrées.",
+      "Fermer",
+    );
+  }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(
+      message,
+      action,
+      {
+        duration: 5000
+      }
+    );
   }
 }
