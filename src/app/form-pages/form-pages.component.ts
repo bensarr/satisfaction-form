@@ -59,7 +59,8 @@ export class FormPagesComponent implements OnInit {
   onResetClick() {
     this.spinner.show();
     setTimeout(() => {
-      this.step--;
+      if(this.step != 0)
+        this.step--;
       this.spinner.hide();
     }, 1000);
   }
